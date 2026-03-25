@@ -19,7 +19,7 @@ type application struct {
 func main() {
 	var cfg config
 
-	flag.StringVar(&cfg.addr, "addr", ":http", "HTTP network address")
+	flag.StringVar(&cfg.addr, "addr", ":4000", "HTTP network address")
 	flag.StringVar(&cfg.staticDir, "static-dir", "./ui/static/", "Path to static assets")
 	flag.Parse()
 
@@ -30,11 +30,15 @@ func main() {
 		errorlog: errorLog,
 		infoLog:  infoLog,
 	}
+
+	srv := &http.Server{
+		Addr:     cfg.addr,
+		ErrorLog: errorLog,
+		Handler:  app.routes(&cfg),
+	}
 	app.infoLog.Printf("Starting a server on %s", cfg.addr)
 
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", app.home)
-	err := http.ListenAndServe(cfg.addr, mux)
+	err := srv.ListenAndServe()
 	if err != nil {
 		app.errorlog.Fatal(err)
 	}
