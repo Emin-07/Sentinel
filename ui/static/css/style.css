@@ -1,0 +1,125 @@
+body{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
+    font-family: "Montserrat", sans-serif;
+}
+
+html, body {
+    height: 100%;
+}
+
+header, nav, main, footer {
+    padding: 2px calc((100% - 800px) / 2) 0;
+}
+
+a{
+    text-decoration: none;
+}
+h1 a {
+    font-size: 36px;
+    font-weight: bold;
+    background-image: url("/static/img/logo.png");
+    background-size:30px;
+    background-repeat: no-repeat;
+    background-position: 0px 0px;
+    height: 36px;
+    padding-left: 50px;
+    position: relative;
+}
+
+
+
+header {
+    background-size: 100% 6px;
+    background-repeat: no-repeat;
+    border-bottom: 1px solid #E4E5E7;
+    overflow: auto;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    text-align: center;
+}
+
+
+main{
+    flex:1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    
+}
+
+footer {
+    background-size: 100% 6px;
+    background-repeat: no-repeat;
+    border-bottom: 1px solid #E4E5E7;
+    overflow: auto;
+    text-align: center;
+    border-top: 1px solid #E4E5E7;
+    padding-top: 17px;
+    padding-bottom: 15px;
+    background: #F7F9FA;
+    height: 60px;
+    color: #6A6C6F;
+    text-align: center;
+}
+
+.circle{
+    height: 12px;
+    width: 12px;
+    border-radius: 100%;
+    border: none;
+    transition: background-color 0.3s ease-in-out;
+    margin: 0 auto;
+}
+
+
+
+.active{
+    background-color: rgb(0, 200, 0);
+}
+
+
+.inactive{
+    background-color:rgb(200, 0, 0);
+}
+
+
+table {
+    background: white;
+    border: 1px solid #E4E5E7;
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 3%;
+}
+
+td, th {
+    text-align: center;
+    padding: 9px 18px;
+}
+
+
+tr {
+    border: 1px solid #E4E5E7;
+}
+
+tr:nth-child(2n) {
+    background-color: #F7F9FA;
+}
+
+nav{
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+

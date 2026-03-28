@@ -7,15 +7,15 @@
         <tr>
             <th>ID</th>
             <th>Title</th>
-            <th>StartedAt</th>
+            <th>Observing</th>
             <th>Active</th>
         </tr>
         {{range .Processes}}
         <tr>
             <td>{{.ID}}</td>
             <td><a href="/process/view?id={{.ID}}">{{.Title}}</a></td>
-            <td>{{.StartedAt}}</td>
-            <td><div class="circle {{if .Active}}active{{else}}inactive{{end}}"></d><td>    
+            <td>{{.Observing}}</td>
+            <td><div class="{{if .Active}}greenCircle{{else}}redCircle"></div><td>    
         </tr>
         {{end}}
     {{end}}
