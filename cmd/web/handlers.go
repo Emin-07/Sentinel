@@ -1,10 +1,47 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 	"text/template"
+	"time"
 )
+
+func PingWebsite(url string) error {
+	client := http.Client{Timeout: time.Second * 5}
+	resp, err := client.Head(url)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	return nil
+}
+
+func (app *application) cleanProcesses(w http.ResponseWriter) {
+	ticker := time.NewTicker(time.Minute)
+	defer ticker.Stop()
+
+	for range ticker.C {
+		processes, err := app.processes.Latest()
+		if err != nil {
+			app.errorlog.Print(err)
+		}
+		json.NewEncoder(w).Encode(map[string]bool{"WindowChanged": false})
+		for _, process := range processes {
+			if err := PingWebsite(process.Title); err != nil {
+				process.Active = false
+			}
+			if !process.Active && time.Since(process.StartedAt).Minutes() >= 1 { //change minutes to hours, and check every 5 mins or so
+				app.processes.Delete(process.ID)
+				w.Header().Set("Content-Type", "application/json")
+				json.NewEncoder(w).Encode(map[string]bool{"WindowChanged": true})
+			}
+		}
+	}
+}
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 
@@ -36,6 +73,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		app.serverError(w, err)
 	}
+	go app.cleanProcesses(w)
 }
 
 func (app *application) viewProcess(w http.ResponseWriter, r *http.Request) {
@@ -81,5 +119,6 @@ func (app *application) createProcess(w http.ResponseWriter, r *http.Request) {
 		app.clientError(w, http.StatusMethodNotAllowed)
 		return
 	}
-	process, err := app.processes.Insert()
+	link := r.Response.Body
+	fmt.Fprintf(w, "%v", link)
 }

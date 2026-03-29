@@ -74,3 +74,5 @@ func openDB(dsn string) (*sql.DB, error) {
 	}
 	return db, nil
 }
+
+// if process is in active for a day, then liquadate it

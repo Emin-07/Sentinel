@@ -42,6 +42,15 @@ func (m *ProcessModel) Insert(title string) (int, error) {
 	return int(id), nil
 }
 
+func (m *ProcessModel) Delete(id int) error {
+	stmt := `DELETE FROM processes WHERE id = ?`
+	_, err := m.DB.Exec(stmt, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (m *ProcessModel) Get(id int) (*Process, error) {
 	stmt := `SELECT id, title, startedAt, active FROM processes WHERE id = ?`
 	row := m.DB.QueryRow(stmt, id)
